@@ -1,22 +1,39 @@
 const path = require('path')
-
 const express = require('express');
+const hbs = require('hbs');
 
+//Define paths
 const publicFolderPath = path.join(__dirname, '../public')
+// I create a customize path for views
+const viewsPath = path.join(__dirname, '../template/views');
+// I create a customize path for partials
+const partialsPath = path.join(__dirname, '../template/partials');
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 // I implemented handle bars
 app.set('view engine', 'hbs')
+// I am setting the new path here
+app.set('views', viewsPath);
+// Implement partials using handlebars
+hbs.registerPartials(partialsPath);
 
+
+
+
+
+// Setup static direcotry to server
 app.use(express.static(publicFolderPath));
 
+// I cresated the name parameter
+const name = 'Augustine'
 // I am using render to show my views of the home page using handle bars
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather App',
-        name: 'Augustine'
+        name
     });
 })
 
@@ -24,7 +41,7 @@ app.get('', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About me',
-        name: 'Augustine'
+        name
     })
 })
 
@@ -34,7 +51,8 @@ const help_message = 'This is the help section, please ask your questions'
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Welcome to our help page',
-        note: help_message
+        note: help_message,
+        name
     })
 })
 
