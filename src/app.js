@@ -65,7 +65,20 @@ app.get('/weather', (req, res) => {
     ])
 })
 
+//setting an extended help error page
+app.get('/help/*', (req, res) => {
+    res.render('errorPage', {
+        error_message:'This page for help extention not found'
+    })
+})
 
+
+// An error page for any request that doesn't match the url above
+app.get('*', (req, res) => {
+    res.render('errorPage', {
+        error_message: 'This is an error page'
+    })
+})
 
 
 app.listen(PORT, () => {
