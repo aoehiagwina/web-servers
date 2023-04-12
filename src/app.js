@@ -56,20 +56,34 @@ app.get('/help', (req, res) => {
     })
 })
 
-app.get('/weather', (req, res) => {
-    res.send([
-        {
-            weather: 'cloudy',
-            location: 'Liverpool'
-        }
-    ])
-})
+// app.get('/weather', (req, res) => {
+//     res.send([
+//         {
+//             weather: 'cloudy',
+//             location: 'Liverpool'
+//         }
+//     ])
+// })
 
 //setting an extended help error page
 app.get('/help/*', (req, res) => {
     res.render('errorPage', {
         title: '404',
         error_message:'This page for help extention not found'
+    })
+})
+
+app.get('/weather', (req, res) => {
+    let location = req.query.location
+
+    if (!location) {
+        return res.send({
+            error: 'Please add a location value'
+        })
+    }
+
+    res.send({
+        location: location
     })
 })
 
