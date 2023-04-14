@@ -1,6 +1,8 @@
 const path = require('path')
 const express = require('express');
 const hbs = require('hbs');
+//importing my getweather files from utils
+const getWeather_details = require('./utils/getweather');
 
 //Define paths
 const publicFolderPath = path.join(__dirname, '../public')
@@ -72,19 +74,29 @@ app.get('/help/*', (req, res) => {
         error_message:'This page for help extention not found'
     })
 })
-
+// I can set a default parameter for any variable, so the function can run even when a location is not provided
 app.get('/weather', (req, res) => {
     let location = req.query.location
-
+    
     if (!location) {
         return res.send({
             error: 'Please add a location value'
         })
     }
 
-    res.send({
-        location: location
+    getWeather_details(location, (error, data) => {
+        if (error) {
+            return res.send({
+                error
+            })
+        } 
+
+        res.send({
+            forecast: data,
+            location: location
+        })
     })
+
 })
 
 
